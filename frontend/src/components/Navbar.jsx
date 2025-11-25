@@ -1,86 +1,70 @@
-import { CircleFadingPlus, MenuIcon, XIcon } from 'lucide-react';
-import { useState } from 'react';
+'use client'
+import { CircleFadingPlus, MenuIcon, XIcon, Origami } from 'lucide-react'
+import { useState } from 'react'
 
 const navLinks = [
-  { title: 'Tools', link: '#' },
-  { title: 'Blog', link: '#' },
-  { title: 'Contact', link: '#' },
-  { title: 'About', link: '#' },
-];
+  { title: 'Produk dan Layanan', link: '#produk' },
+  { title: 'Tentang Kami', link: '#tentang' },
+  { title: 'Hubungi Kami', link: '#kontak' },
+]
 
 const Navbar = () => {
-  const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(false)
 
   const handleShowNav = () => {
-    setShowNav(!showNav);
-  };
+    setShowNav(!showNav)
+  }
 
   return (
-    // 'sticky top-0' makes it stay at the top when scrolling
-    <nav className=" relative z-50 w-full bg-white shadow-md"> 
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        
-        {/* 1. Mobile Menu Button & Logo Group */}
-        <div className="flex items-center gap-4">
-          {/* Hamburger Menu (Mobile only) */}
-          <button 
-            onClick={handleShowNav} 
-            aria-label="Toggle Menu" 
-            className="md:hidden focus:outline-none"
-          >
+    <nav className="sticky top-0 z-50 bg-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between bg-white px-2 py-2 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-4 sm:gap-10">
+          {/* hamburger menu or cross icon */}
+          <button onClick={handleShowNav} aria-label="Toggle Menu" className="md:hidden">
             {showNav ? (
-              <XIcon className="text-stone-900" strokeWidth={2} size={28} />
+              <XIcon color="#202020" strokeWidth={3} size={25} />
             ) : (
-              <MenuIcon className="text-stone-900" strokeWidth={2} size={28} />
+              <MenuIcon color="#202020" strokeWidth={3} size={25} />
             )}
           </button>
-
-          {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            <img
-              src="https://res.cloudinary.com/dyvkdwzcj/image/upload/v1709055594/logo-1_vo1dni.png"
-              className="h-8 w-auto"
-              alt="Logo"
-            />
-            <span className="text-xl font-bold text-stone-900 md:text-2xl">
-              BestTech
+          {/* logo */}
+          <a href="/" className="flex items-center gap-3">
+            <Origami color='#202020' strokeWidth={3} size={25} className='h-8' />
+          
+            <span className="self-center text-xl font-semibold whitespace-nowrap text-stone-900 md:text-2xl">
+              Koperasi Syariah
             </span>
           </a>
-        </div>
-
-        {/* 2. Navigation Links */}
-        <div
-          className={`absolute left-0 right-0 w-full bg-white p-4 shadow-lg transition-all duration-300 ease-in-out md:static md:block md:w-auto md:bg-transparent md:p-0 md:shadow-none ${
-            showNav ? 'top-16 opacity-100' : 'top-[-400px] opacity-0 md:opacity-100'
-          }`}
-        >
-          <div className="flex flex-col gap-4 md:flex-row md:gap-8">
+          {/* nav links */}
+          <div
+            className={`absolute right-0 left-0 -z-10 flex w-full flex-col gap-3 bg-white p-3 shadow transition-all duration-300 ease-in-out md:relative md:top-auto md:right-auto md:left-0 md:z-auto md:flex-row md:shadow-none ${showNav ? 'top-[54px]' : 'top-[-165px]'}`}
+          >
             {navLinks.map(({ title, link }, index) => (
               <a
                 key={index}
                 href={link}
-                className="font-medium text-slate-600 hover:text-amber-500 transition-colors"
+                onClick={() => setShowNav(false)}
+                className="rounded-md px-3 py-2 text-slate-500 transition-colors duration-100 ease-linear hover:bg-gray-700 hover:text-white"
               >
                 {title}
               </a>
             ))}
           </div>
         </div>
-
-        {/* 3. CTA Button */}
+        {/* CTA button */}
         <div>
           <button
             type="button"
-            className="flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-amber-600 focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+            className="flex items-center gap-2 rounded-lg border bg-amber-500 px-3.5 py-1.5 text-base font-semibold text-white transition duration-300 ease-in-out hover:bg-amber-600 active:scale-95 sm:px-5 sm:py-2"
           >
             <CircleFadingPlus size={18} />
-            <span>Submit</span>
+            <span>Masuk sebagai Member</span>
           </button>
         </div>
-
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+
+export default Navbar
