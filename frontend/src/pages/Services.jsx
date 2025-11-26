@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Products = () => {
+const Services = () => {
   return (
     <section 
       id="produk" 
@@ -13,4 +13,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Services;

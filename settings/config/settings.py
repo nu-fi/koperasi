@@ -46,6 +46,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'apps.users.apps.UsersConfig',
     'apps.loans.apps.LoansConfig',
@@ -139,6 +140,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000", # React usually runs here
-    "http://localhost:5173", # If you use Vite
+    "http://localhost:3000", # React
+    "http://localhost:5173", # Vite
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# AUTH_USER_MODEL = 'users.User'
