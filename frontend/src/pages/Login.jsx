@@ -1,10 +1,20 @@
 import { LoaderCircle, Lock, Mail, Origami } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { toast } from "react-toastify";
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL + "/user/login/"
 
 function Login() {
   const [user, setUser] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+  const { loginAction } = useAuth();
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -12,8 +22,8 @@ function Login() {
     setErrors({ ...errors, [name]: '' })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleLogin = async (ev) => {
+    ev.preventDefault()
     let newErrors = { email: '', password: '' }
 
     if (!user.email.trim()) newErrors.email = 'Please enter a valid email.'
@@ -25,13 +35,39 @@ function Login() {
     }
 
     setLoading(true)
-    
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false)
-      alert('Login successful!')
-      // Here you would usually redirect or save the token
-    }, 2000)
+
+    try {
+      const response = await axios.post(BACKEND_URL, {
+        email: user.email,
+        password: user.password
+      });
+
+      const data = response.data;
+
+      // 1. CHECK FOR LOGICAL FAILURE (Status 200 but success: false)
+      if (data.success === false) {
+        toast.error(data.message); // Show: "Invalid Login Credentials! Please try again."
+        setLoading(false);
+        return; // Stop here! Do not log in.
+      }
+
+      // 2. IF SUCCESSFUL
+      loginAction(data);
+      toast.success('Login successful!');
+      navigate('/dashboard');
+
+    } catch (error) {
+      // 3. HANDLE NETWORK/SERVER ERRORS (404, 500, etc.)
+      console.error(error);
+      if (error.response && error.response.data) {
+         // If server returns error message in a different format
+         toast.error(error.response.data.message || error.response.data.detail || "Login failed");
+      } else {
+         toast.error("Server error. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -44,7 +80,7 @@ function Login() {
         
         <h2 className="mb-8 text-center text-2xl font-semibold text-gray-800">Login to Koperasi Syariah</h2>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           {/* Email */}
           <div className="mb-6">
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700">
@@ -123,5 +159,6 @@ function Login() {
     </div>
   )
 }
+
 
 export default Login

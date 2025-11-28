@@ -1,5 +1,3 @@
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import send_mail
 from rest_framework import status
@@ -161,9 +159,10 @@ class RegisterView(APIView):
     View to handle user registration.
     """
     def post(self, request, format=None):
-        request.data['password'] = make_password(password=request.data['password'], salt=salt)
+        # request.data['password'] = make_password(password=request.data['password'], salt=salt)
         serializer = MemberSerializer(data=request.data)
         if serializer.is_valid():
+            
             serializer.save()
             return Response({
                 "success": True,
@@ -190,9 +189,9 @@ class LoginView(APIView):
     def post(self, request, format=None):
         email = request.data['email']
         password = request.data['password']
-        hashed_password = make_password(password=password, salt=salt)
+        # hashed_password = make_password(password=password, salt=salt)
         user = User.objects.filter(email=email).first()
-        if user is None or user.password != hashed_password:
+        if user is None or not check_password(password, user.password):
             return Response({
                 "success": False,
                 "message": "Invalid Login Credentials! Please try again."
@@ -211,3 +210,15 @@ class LoginView(APIView):
                 }, 
                 status=status.HTTP_200_OK
             )
+
+class DashboardView(APIView):
+    """
+    View to handle dashboard data retrieval.
+    """
+    def get(self, request, format=None):
+        return Response({
+            "success": True,
+            "message": "Dashboard data retrieved successfully!"
+            }, 
+            status=status.HTTP_200_OK
+        )

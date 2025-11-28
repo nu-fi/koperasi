@@ -1,6 +1,8 @@
-import { LogInIcon, MenuIcon, XIcon, Origami } from 'lucide-react'
+import { LogInIcon, MenuIcon, XIcon, Origami, LogOutIcon } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const navLinks = [
   { title: 'Produk dan Layanan', link: '#produk' },
@@ -10,9 +12,17 @@ const navLinks = [
 
 const Navbar = () => {
   const [showNav, setShowNav] = useState(false)
+  const { isLoggedIn, setIsLogin, logoutAction } = useAuth();
+  const navigate = useNavigate();
 
   const handleShowNav = () => {
     setShowNav(!showNav)
+  }
+
+  const handleLogout = () => {
+    logoutAction();
+    navigate('/');
+    toast.success("Logged out successfully");
   }
 
   return (
@@ -51,25 +61,25 @@ const Navbar = () => {
             ))}
           </div>
         </div>
-        {/* CTA button */}
-        {/* <div>
-          <button
-            type="button"
-            className="flex items-center gap-2 rounded-lg border bg-amber-500 px-3.5 py-1.5 text-base font-semibold text-white transition duration-300 ease-in-out hover:bg-amber-600 active:scale-95 sm:px-5 sm:py-2"
-          >
-            <LogInIcon strokeWidth={3} size={18} />
-            <span>Login</span>
-          </button>
-        </div> */}
+        
+        {/* Login Button */}
         <div>
-          {/* Change button to Link and add the 'to' prop */}
-          <Link
-            to="/login"
-            className="flex items-center gap-2 rounded-lg border bg-amber-500 px-3.5 py-1.5 text-base font-semibold text-white transition duration-300 ease-in-out hover:bg-amber-600 active:scale-95 sm:px-5 sm:py-2"
-          >
-            <LogInIcon strokeWidth={3} size={18} />
-            <span>Login</span>
-          </Link>
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className='flex items-center gap-2 rounded-lg border bg-red-500 px-3.5 py-1.5 text-base font-semibold text-white transition duration-300 ease-in-out hover:bg-red-600 active:scale-95 sm:px-5 sm:py-2'>
+                <LogOutIcon strokeWidth={3} size={18} />
+                <span>Logout</span>
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center gap-2 rounded-lg border bg-amber-500 px-3.5 py-1.5 text-base font-semibold text-white transition duration-300 ease-in-out hover:bg-amber-600 active:scale-95 sm:px-5 sm:py-2"
+            >
+              <LogInIcon strokeWidth={3} size={18} />
+              <span>Login</span>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

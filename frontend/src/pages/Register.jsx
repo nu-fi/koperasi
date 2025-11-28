@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { LoaderCircle, Lock, Mail, UserRound, Origami } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
@@ -13,7 +13,7 @@ function Register() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) navigate("/");
+    if (isLoggedIn) navigate("/dashboard");
   }, [isLoggedIn, navigate]);
 
   const handleRegister = async (ev) => {
@@ -49,7 +49,7 @@ function Register() {
           access: data.token,
           refresh: data.refreshToken
         });
-        navigate("/");
+        navigate("/dashboard");
       } else {
         toast.error(data.message);
       }

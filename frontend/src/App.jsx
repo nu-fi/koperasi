@@ -5,12 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Navbar from './components/navbar.jsx';
 import Footer from './components/Footer.jsx';
+import DashboardLayout from './components/DashboardLayout.jsx';
 
 import LandingPage from './pages/LandingPage.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 import { AuthProvider } from './context/AuthContext.jsx';
+import PrivateRoute from './context/PriveteRoute.jsx';
 
 // 1. Create a Layout component that includes Nav and Footer
 const MainLayout = () => {
@@ -27,10 +30,6 @@ const MainLayout = () => {
 };
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
   return (
     <AuthProvider>
         <Router>
@@ -47,6 +46,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
+          {/* GROUP 3: Dashboard Pages (Sidebar Layout) */}
+          {/* Any route inside here will have the Sidebar */}
+          <Route element={<PrivateRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              {/* Add more sidebar pages here later, e.g.: */}
+              {/* <Route path="/users" element={<UsersPage />} /> */}
+              {/* <Route path="/settings" element={<SettingsPage />} /> */}
+            </Route>
+          </Route>
+
         </Routes>
       </Router>
     </AuthProvider>

@@ -16,7 +16,7 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import include, path
-from .views import RegisterView, LoginView, ForgotPasswordRequestView, ResetPasswordRequestView
+from .views import RegisterView, LoginView, ForgotPasswordRequestView, ResetPasswordRequestView, DashboardView
 
 from . import views
 
@@ -25,4 +25,5 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('forgot-password/', views.ForgotPasswordRequestView.as_view(), name='forgot_password'),
     path('reset-password/', views.ResetPasswordRequestView.as_view(), name='reset_password'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 ]

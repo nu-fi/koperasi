@@ -6,12 +6,13 @@ class Token(models.Model):
     Model representing an authentication token for a user, with fields to track its creation, expiration, and usage status.
     """
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     expired_at = models.DateTimeField()
     is_used = models.BooleanField(default=False)
     is_expired = models.BooleanField(default=False)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tokens')
 
     def __str__(self):
         return self.user.username

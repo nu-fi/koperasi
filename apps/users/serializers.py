@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Token, Member
+from django.db import transaction
 
 class TokenSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,7 +13,7 @@ class MemberSerializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True)
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(write_only=True)
-    user = serializers.StringRelatedField(read_only=True)  # To display the username instead of the user ID
+    user = serializers.StringRelatedField(read_only=True)  
 
     class Meta:
         model = Member
@@ -23,21 +24,37 @@ class MemberSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'member_id': {'read_only': True}
         }
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+
+    def generate_username(self, name):
+        base_username = name.lower().replace(" ", "_")
+        username = base_username
+        counter = 1
+        while User.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+        return username
     
     def create(self, validated_data):
         name = validated_data.pop('name')
         email = validated_data.pop('email')
         password = validated_data.pop('password')
+        username = self.generate_username(name)
+        parts = name.split()
+        first_name = parts[0]
+        last_name = " ".join(parts[1:]) if len(parts) > 1 else ""
 
-        user = User.objects.create_user(
-            username=name,
-            first_name=name,
-            email=email,
-            password=password
-        )
-        member = Member.objects.create(user=user, **validated_data)
+        with transaction.atomic():
+            user = User.objects.create_user(
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password
+            )  
+            member = Member.objects.create(user=user, **validated_data)
         return member
-    # class UserSerializer(serializers.ModelSerializer):
-    #     class Meta:
-    #         model = User
-    #         fields = ['id', 'username', 'email', 'first_name', 'last_name']
