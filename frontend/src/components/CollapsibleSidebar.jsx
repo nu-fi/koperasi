@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { ChevronLeft, Home, LayoutDashboard, LogOut, Settings, Users } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { ChevronLeft, CircleUser, LayoutDashboard, LogOut, Settings, HandCoins } from 'lucide-react'
 import { cn } from '../context/cn.js'
 import SidebarItem from "./SidebarItem"
 import { useAuth } from '../context/AuthContext';
@@ -16,7 +16,7 @@ const CollapsibleSidebar = ({ className }) => {
   // Mock user data (Replace with context data)
   const user = {
     name: name || "User", 
-    email: email || "No email provided",
+    // email: email || "No email provided",
     avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=32&h=32&fit=crop&crop=face"
   }
 
@@ -34,9 +34,10 @@ const CollapsibleSidebar = ({ className }) => {
   }
 
   const menuItems = [
-    { icon: Home, label: 'Home', slug: '/' },
+    // { icon: Home, label: 'Home', slug: '/' },
     { icon: LayoutDashboard, label: 'Dashboard', slug: '/dashboard' },
-    { icon: Users, label: 'Users', slug: '/user' },
+    { icon: CircleUser, label: 'Profil', slug: '/profile' },
+    { icon: HandCoins, label: 'Pembiayaan', slug: '/pembiayaan' },
   ]
 
   const userActions = [
@@ -111,7 +112,7 @@ const CollapsibleSidebar = ({ className }) => {
             )}
           >
             <span className="text-sm font-medium text-gray-700">{user.name}</span>
-            <span className="text-xs text-gray-500">{user.email}</span>
+            {/* <span className="text-xs text-gray-500">{user.email}</span> */}
           </div>
         </div>
 

@@ -2,8 +2,9 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import send_mail
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated 
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Member, Token
 from .serializers import MemberSerializer, TokenSerializer
 from django.contrib.auth.models import User
@@ -16,17 +17,8 @@ import os
 from settings.config.settings import BASE_DIR 
 import hashlib
 
-
-# def home(request):
-#     return HttpResponse("Welcome to the Home Page FOR MEMBERS ONLY")
-
-# def profile(request):
-#     return HttpResponse("This is the Profile Page FOR MEMBERS ONLY")
-
-
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 env = environ.Env(
-    # set casting, default value
     DEBUG=(bool, False)
 )
 
@@ -189,7 +181,6 @@ class LoginView(APIView):
     def post(self, request, format=None):
         email = request.data['email']
         password = request.data['password']
-        # hashed_password = make_password(password=password, salt=salt)
         user = User.objects.filter(email=email).first()
         if user is None or not check_password(password, user.password):
             return Response({
@@ -199,9 +190,12 @@ class LoginView(APIView):
                 status=status.HTTP_200_OK
             )
         else:
+            refresh = RefreshToken.for_user(user)
             return Response({
                 "success": True,
                 "message": "Login successful!",
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
                 "user_id": user.id,
                 "username": user.username,
                 "email": user.email,
@@ -222,3 +216,31 @@ class DashboardView(APIView):
             }, 
             status=status.HTTP_200_OK
         )
+    
+class ProfileView(APIView):
+    """
+    View to handle profile data retrieval.
+    """
+    permission = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = request.user
+
+        try:
+            member = Member.objects.get(user=user)
+            serializer = MemberSerializer(member)
+            return Response({
+                "success": True,
+                "message": "Profile data retrieved successfully!",
+                "data": serializer.data
+                }, 
+                status=status.HTTP_200_OK
+            )
+        except Member.DoesNotExist:
+            return Response({
+                "success": False,
+                "message": "Member profile does not exist!"
+                }, 
+                status=status.HTTP_200_OK
+            )
+        

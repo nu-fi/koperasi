@@ -13,12 +13,14 @@ class MemberSerializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True)
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(write_only=True)
-    user = serializers.StringRelatedField(read_only=True)  
+    user = serializers.StringRelatedField(read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)  
 
     class Meta:
         model = Member
         fields = [
-            'id', 'user', 'member_id', 'name', 'email', 'password', 'status', 'date_joined',
+            'id', 'user', 'member_id', 'name', 'email', 'password', 'status', 'date_joined', 'phone_number', 'address', 'birth_date', 'ktp_number', 'first_name', 'last_name'
         ]
 
         extra_kwargs = {
@@ -58,3 +60,4 @@ class MemberSerializer(serializers.ModelSerializer):
             )  
             member = Member.objects.create(user=user, **validated_data)
         return member
+    

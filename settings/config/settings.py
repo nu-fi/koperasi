@@ -13,6 +13,7 @@ import environ
 import os
 
 from pathlib import Path
+from datetime import timedelta
 
 
 env = environ.Env(
@@ -148,6 +149,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+}
+
+SIMPLE_JWT = {
+    # Change this from minutes=5 to minutes=60 or days=1
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60), 
+    
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
 }
 
 # AUTH_USER_MODEL = 'users.User'

@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Profile from './pages/user/Profile.jsx';
 
 import { AuthProvider } from './context/AuthContext.jsx';
 import PrivateRoute from './context/PriveteRoute.jsx';
@@ -51,8 +52,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              {/* Add more sidebar pages here later, e.g.: */}
-              {/* <Route path="/users" element={<UsersPage />} /> */}
+              <Route path="/profile" element={<Profile />} />
               {/* <Route path="/settings" element={<SettingsPage />} /> */}
             </Route>
           </Route>
