@@ -12,6 +12,9 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Profile from './pages/user/Profile.jsx';
+import ApplyLoan from './pages/user/ApplyLoan.jsx';
+import LoanProgress from './pages/user/LoanProgress.jsx';
+import Repayment from './pages/user/Repayment.jsx';
 
 import { AuthProvider } from './context/AuthContext.jsx';
 import PrivateRoute from './context/PriveteRoute.jsx';
@@ -53,6 +56,10 @@ function App() {
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/apply-loan" element={<ApplyLoan />} />
+              <Route path="/loan-progress" element={<LoanProgress />} />
+              <Route path="/repayment" element={<Repayment />} />
+
               {/* <Route path="/settings" element={<SettingsPage />} /> */}
             </Route>
           </Route>

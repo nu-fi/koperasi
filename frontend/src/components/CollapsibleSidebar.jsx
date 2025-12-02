@@ -1,22 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ChevronLeft, CircleUser, LayoutDashboard, LogOut, Settings, HandCoins } from 'lucide-react'
+import { ChevronLeft, CircleUser, LayoutDashboard, LogOut, Settings, HandCoins, Wallet, FileClock } from 'lucide-react' // Added FileClock icon
 import { cn } from '../context/cn.js'
 import SidebarItem from "./SidebarItem"
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+
+const STATUS_API_URL = (import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:8000') + '/loans/status/';
 
 const CollapsibleSidebar = ({ className }) => {
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const location = useLocation() // Get current URL path
+  const location = useLocation()
   const navigate = useNavigate()
-  
-  const { name, email, logoutAction } = useAuth(); 
-  
-  // Mock user data (Replace with context data)
+  const { name, logoutAction } = useAuth();
+  const [loanStatus, setLoanStatus] = useState(null);
+
+  // User data structure
   const user = {
-    name: name || "User", 
-    // email: email || "No email provided",
+    name: name || "User",
     avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=32&h=32&fit=crop&crop=face"
   }
 
@@ -26,23 +28,69 @@ const CollapsibleSidebar = ({ className }) => {
 
   const handleLogout = () => {
     navigate('/');
-
     setTimeout(() => {
         logoutAction();
         toast.success("Logged out successfully");
     }, 0);
   }
 
+  useEffect(() => {
+    const checkActiveLoan = async () => {
+      const token = localStorage.getItem('access');
+      if (!token) return;
+
+      try {
+        const response = await axios.get(STATUS_API_URL, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        // Simpan status spesifik dari backend ('pending', 'disbursed', dll)
+        if (response.data) {
+            setLoanStatus(response.data.status);
+        }
+
+      } catch (error) {
+        console.error("Sidebar check failed:", error);
+      }
+    };
+
+    checkActiveLoan();
+  }, []);
+
+  let dynamicMenu = null;
+
+  if (loanStatus === 'disbursed') {
+    // KONDISI 1: Uang sudah cair -> Tampilkan Menu Angsuran
+    dynamicMenu = { 
+        icon: Wallet, 
+        label: 'Info Angsuran', 
+        slug: '/repayment' // Halaman tabel cicilan
+    };
+  } else if (loanStatus === 'pending' || loanStatus === 'approved') {
+    // KONDISI 2: Masih proses -> Tampilkan Timeline
+    dynamicMenu = { 
+        icon: FileClock, 
+        label: 'Status Pengajuan', 
+        slug: '/loan-progress' // Halaman timeline
+    };
+  } else {
+    // KONDISI 3: Belum ada / Ditolak / Lunas -> Tampilkan Form Ajukan
+    dynamicMenu = { 
+        icon: HandCoins, 
+        label: 'Ajukan Pembiayaan', 
+        slug: '/apply-loan' 
+    };
+  }
+
   const menuItems = [
-    // { icon: Home, label: 'Home', slug: '/' },
     { icon: LayoutDashboard, label: 'Dashboard', slug: '/dashboard' },
     { icon: CircleUser, label: 'Profil', slug: '/profile' },
-    { icon: HandCoins, label: 'Pembiayaan', slug: '/pembiayaan' },
+    // Masukkan menu dinamis tadi
+    dynamicMenu 
   ]
 
   const userActions = [
     { icon: Settings, label: 'Settings', slug: '/settings' },
-    // Logout is handled separately below to attach onClick
   ]
 
   return (
@@ -67,7 +115,7 @@ const CollapsibleSidebar = ({ className }) => {
               isCollapsed && 'hidden opacity-0',
             )}
           >
-            Flexy UI
+            Koperasi Syariah
           </span>
         </div>
         <button
@@ -89,7 +137,7 @@ const CollapsibleSidebar = ({ className }) => {
               <SidebarItem 
                 {...item} 
                 isCollapsed={isCollapsed} 
-                active={location.pathname === item.slug} // Dynamic active state
+                active={location.pathname === item.slug}
               />
             </li>
           ))}
@@ -112,7 +160,6 @@ const CollapsibleSidebar = ({ className }) => {
             )}
           >
             <span className="text-sm font-medium text-gray-700">{user.name}</span>
-            {/* <span className="text-xs text-gray-500">{user.email}</span> */}
           </div>
         </div>
 
@@ -127,7 +174,7 @@ const CollapsibleSidebar = ({ className }) => {
             />
           ))}
           
-          {/* Logout Button (Special Case) */}
+          {/* Logout Button */}
           <button 
             onClick={handleLogout} 
             className="w-full text-left"

@@ -1,4 +1,5 @@
 from django.db import models
+import django.utils.timezone
 from apps.users.models import Member
 
 class LoanApplication(models.Model):
@@ -26,29 +27,37 @@ class LoanApplication(models.Model):
     
 class ActiveLoan(models.Model):
     """
-    Model representing an active loan that has been approved and disbursed to a member.
+    Model representing an active loan associated with a loan application.
     """
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='active_loans')
     loan_application = models.OneToOneField(LoanApplication, on_delete=models.CASCADE, related_name='active_loan')
 
-    amount_disbursed = models.DecimalField(max_digits=10, decimal_places=2)
+    amount_disbursed = models.DecimalField(max_digits=12, decimal_places=2) # The Principal (Pokok)
     tenor_months = models.PositiveIntegerField()
-    # interest_rate = models.DecimalField(max_digits=5, decimal_places=2, help_text="Annual interest rate as a percentage.")
     disbursement_date = models.DateField(auto_now_add=True)
-    is_fully_paid = models.BooleanField(default=False)
     due_date = models.DateField()
+    
+    # --- ADD THESE NEW FIELDS ---
+    margin_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0) # Keuntungan Koperasi
+    total_repayment = models.DecimalField(max_digits=12, decimal_places=2, default=0) # Pokok + Margin
+    monthly_installment = models.DecimalField(max_digits=12, decimal_places=2, default=0) # Angsuran per bulan
+    
+    is_fully_paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Active Loan {self.id} for {self.member}"
+        return f"Active Loan {self.id} for {self.member.user.first_name} {self.member.user.last_name}"
     
 class LoanRepayment(models.Model):
     """
     Model representing a repayment made towards an active loan.
     """
     active_loan = models.ForeignKey(ActiveLoan, on_delete=models.CASCADE, related_name='repayments')
-    payment_date = models.DateField(auto_now_add=True)
+    # payment_date = models.DateField(auto_now_add=True)
+    payment_date = models.DateField(default=django.utils.timezone.now)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_number = models.IntegerField(help_text="Sequential number of the payment made.")
+    # payment_number = models.IntegerField(help_text="Sequential number of the payment made.")
+    proof_of_payment = models.ImageField(upload_to='payments/', null=True, blank=True)
+    is_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Repayment {self.id} for Loan {self.active_loan.id} - Amount: {self.amount_paid}"

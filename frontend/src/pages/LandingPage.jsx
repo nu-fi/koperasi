@@ -12,12 +12,12 @@ const LandingPage = () => {
         <Home />
       </section>
 
-      <section id="tentang">
-        <About />
-      </section>
-
       <section id="produk">
         <Services />
+      </section>
+
+      <section id="tentang">
+        <About />
       </section>
 
       <section id="kontak">

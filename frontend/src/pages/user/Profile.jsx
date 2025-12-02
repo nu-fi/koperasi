@@ -1,9 +1,9 @@
-// pages/Profile.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SensitiveField from '../../context/SensitiveField';
 import { useAuth } from '../../context/AuthContext';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL + "/user/profile/";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -15,7 +15,7 @@ const Profile = () => {
       try {
         const token = localStorage.getItem('access'); // Get the key to the vault
         
-        const response = await axios.get('http://127.0.0.1:8000/user/profile/', {
+        const response = await axios.get(BACKEND_URL, {
           headers: {
             'Authorization': `Bearer ${token}` // <--- Unlock the door
           }

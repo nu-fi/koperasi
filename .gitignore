@@ -3,6 +3,7 @@
 import_*.py
 .env
 .venv
+*.csv
 
 =======
 # Byte-compiled / optimized / DLL files
