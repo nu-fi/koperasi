@@ -6,7 +6,7 @@ const CalculatorModal = ({ isOpen, onClose, productName = "Pembiayaan Barang" })
   const [price, setPrice] = useState(5000000); // Default 10 Juta
   const [dpPercent, setDpPercent] = useState(0); // Default DP 20%
   const [tenor, setTenor] = useState(12); // Default 12 Bulan
-  const [margin, setMargin] = useState(30); // Margin keuntungan per tahun (setara)
+  const [margin, setMargin] = useState(35); // Margin keuntungan per tahun (setara)
 
   // State untuk hasil perhitungan
   const [result, setResult] = useState({

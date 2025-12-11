@@ -7,4 +7,6 @@ urlpatterns = [
     path('status/', views.CheckActiveLoanView.as_view(), name='loan_status'),
     path('my-applications/', views.MyLoanApplicationsView.as_view(), name='my-loans'),
     path('repayment/detail/', views.MyRepaymentDetailView.as_view(), name='repayment-detail'),
+    path('repayment/upload/', views.UploadRepaymentProofView.as_view(), name='upload-repayment'),
+    path('history/', views.LoanHistoryView.as_view(), name='loan-history'),
 ]

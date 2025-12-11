@@ -29,6 +29,7 @@ sdist/
 var/
 wheels/
 share/python-wheels/
+media/payments
 *.egg-info/
 .installed.cfg
 *.egg

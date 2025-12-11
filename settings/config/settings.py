@@ -161,3 +161,77 @@ SIMPLE_JWT = {
 }
 
 # AUTH_USER_MODEL = 'users.User'
+MEDIA_URL = '/media/'
+
+# Folder fisik tempat gambar disimpan
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# settings.py
+
+JAZZMIN_SETTINGS = {
+    # 1. Judul & Logo
+    "site_title": "Koperasi Admin",
+    "site_header": "Koperasi Syariah",
+    "site_brand": "Koperasi Syariah",
+    "welcome_sign": "Selamat Datang Admin",
+
+    # 2. PENGATURAN SIDEBAR (MUNCULKAN MENU SAMPING)
+    # ------------------------------------------------------------------
+    "show_sidebar": True,          # Wajib True agar sidebar muncul
+    "navigation_expanded": True,   # Agar menu default-nya terbuka (tidak kuncup)
+    
+    # 3. Kustomisasi Menu Sidebar
+    # Anda bisa menyembunyikan model tertentu atau mengubah urutan
+    "hide_apps": [],              # Masukkan nama app yang ingin disembunyikan
+    "hide_models": [],            # Masukkan model spesifik yang ingin disembunyikan
+    
+    # 4. Icon Keren (Menggunakan FontAwesome)
+    # Format: {"app_label.model_name": "fontawesome_icon"}
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "users.User": "fas fa-user",
+        "loans.ActiveLoan": "fas fa-money-bill-wave",
+        "loans.LoanApplication": "fas fa-file-invoice-dollar",
+        "loans.RepaymentLog": "fas fa-history",
+    },
+
+    # 5. MENAMBAHKAN LINK CUSTOM KE DASHBOARD GRAFIK KITA
+    # Ini akan membuat menu baru di sidebar khusus untuk halaman grafik tadi
+    "custom_links": {
+        "loans": [{
+            "name": "Dashboard Laporan",  # Nama Menu
+            "url": "admin-dashboard",     # Nama URL (name='admin-dashboard') di urls.py
+            "icon": "fas fa-chart-pie",   # Icon Chart
+            "permissions": ["loans.view_activeloan"] # Hanya muncul jika user punya izin
+        }]
+    },
+}
+
+# Pengaturan Tampilan UI (Opsional, agar lebih rapi)
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-primary",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,      # Agar sidebar tetap diam saat discroll
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "theme": "flatly",          # Pilihan tema: darkly, flatly, simplex, united
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}

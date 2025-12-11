@@ -35,3 +35,8 @@ class ActiveLoanDetailSerializer(serializers.ModelSerializer):
     def get_remaining_amount(self, obj):
         paid = self.get_total_paid(obj)
         return obj.total_repayment - paid
+    
+class UploadRepaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoanRepayment
+        fields = ['amount_paid', 'proof_of_payment']

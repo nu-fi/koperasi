@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ChevronLeft, CircleUser, LayoutDashboard, LogOut, Settings, HandCoins, Wallet, FileClock } from 'lucide-react' // Added FileClock icon
+import { ChevronLeft, CircleUser, LayoutDashboard, LogOut, Settings, HandCoins, Wallet, FileClock, HistoryIcon } from 'lucide-react' // Added FileClock icon
 import { cn } from '../context/cn.js'
 import SidebarItem from "./SidebarItem"
 import { useAuth } from '../context/AuthContext';
@@ -60,21 +60,22 @@ const CollapsibleSidebar = ({ className }) => {
   let dynamicMenu = null;
 
   if (loanStatus === 'disbursed') {
-    // KONDISI 1: Uang sudah cair -> Tampilkan Menu Angsuran
+    // KONDISI 1: Aktif & Belum Lunas -> Menu Angsuran
     dynamicMenu = { 
         icon: Wallet, 
         label: 'Info Angsuran', 
-        slug: '/repayment' // Halaman tabel cicilan
+        slug: '/repayment' 
     };
   } else if (loanStatus === 'pending' || loanStatus === 'approved') {
-    // KONDISI 2: Masih proses -> Tampilkan Timeline
+    // KONDISI 2: Proses Pengajuan -> Menu Status
     dynamicMenu = { 
         icon: FileClock, 
         label: 'Status Pengajuan', 
-        slug: '/loan-progress' // Halaman timeline
+        slug: '/loan-progress' 
     };
   } else {
-    // KONDISI 3: Belum ada / Ditolak / Lunas -> Tampilkan Form Ajukan
+    // KONDISI 3: (Null, Rejected, ATAU 'paid') -> Menu Ajukan Baru
+    // Karena di Backend tadi kita return 'paid' jika lunas, dia akan masuk ke sini (else)
     dynamicMenu = { 
         icon: HandCoins, 
         label: 'Ajukan Pembiayaan', 
@@ -85,8 +86,12 @@ const CollapsibleSidebar = ({ className }) => {
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', slug: '/dashboard' },
     { icon: CircleUser, label: 'Profil', slug: '/profile' },
-    // Masukkan menu dinamis tadi
-    dynamicMenu 
+    
+    // 1. Menu Dinamis (Berubah-ubah)
+    dynamicMenu, 
+
+    // 2. Menu Statis BARU (Selalu Ada)
+    { icon: HistoryIcon, label: 'Riwayat', slug: '/history' }
   ]
 
   const userActions = [
