@@ -14,7 +14,6 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # NEW STEP: Generate a temporary .env file with dummy passwords just for testing
     - name: Create Temporary .env file
       run: |
         echo "DATABASE_URL=postgres://test_user:test_pass@db:5432/test_db" >> .env
@@ -25,13 +24,15 @@ jobs:
         echo "POSTGRES_PASSWORD=test_pass" >> .env
         echo "POSTGRES_DB=test_db" >> .env
 
-    # FIXED: Changed 'docker-compose' to 'docker compose' (removed the hyphen)
     - name: Build Docker Compose
       run: docker compose up -d --build
 
     - name: Sleep for 10 seconds
       run: sleep 10
 
-    # FIXED: Removed the hyphen and pointed exactly to the base app test
     - name: Run Django Tests
       run: docker compose exec -T backend python manage.py test apps.base
+
+    # THE NEW FRONTEND TEST
+    - name: Run React Build Test
+      run: docker compose exec -T frontend npm run build
