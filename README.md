@@ -57,9 +57,11 @@ Because the entire application is containerized, local setup requires zero manua
    
 ## 🧪 Running Tests Locally
 To run the test suite locally using the Docker containers:
+
 Backend (Django):
 ```bash
 docker compose exec backend python manage.py test apps.base
+```
 
 Frontend (React):
 ```bash
