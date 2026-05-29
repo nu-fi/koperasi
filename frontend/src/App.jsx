@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Navbar from './components/navbar.jsx';
+// --- IMPORTS ---
+import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import DashboardLayout from './components/DashboardLayout.jsx';
 
@@ -20,13 +21,12 @@ import LoanHistory from './pages/user/LoanHistory.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import PrivateRoute from './context/PriveteRoute.jsx';
 
-// 1. Create a Layout component that includes Nav and Footer
+// --- LAYOUTS ---
 const MainLayout = () => {
   return (
     <>
       <Navbar />
       <main className="bg-gray-50 min-h-screen">
-        {/* <Outlet /> is a placeholder where the child routes will render */}
         <Outlet />
       </main>
       <Footer />
@@ -34,25 +34,48 @@ const MainLayout = () => {
   );
 };
 
+// --- MAIN APP COMPONENT ---
 function App() {
+  // 1. Connection Test State
+  const [status, setStatus] = useState("Testing connection...");
+
+  // 2. Connection Test Logic
+  useEffect(() => {
+    fetch('http://localhost:8000/admin/')
+      .then(response => {
+        if (response.ok) {
+          setStatus("✅ Connected to Django Backend Successfully!");
+        } else {
+          setStatus("❌ Connected, but got an error (Check Django logs)");
+        }
+      })
+      .catch(error => {
+        setStatus("🚨 Connection Failed: CORS error or Backend is down.");
+        console.error("Fetch error:", error);
+      });
+  }, []);
+
   return (
     <AuthProvider>
-        <Router>
+      <Router>
         <ToastContainer />
+        
+        {/* 3. Temporary Status Banner (Remove this once testing is done!) */}
+        <div style={{ backgroundColor: '#333', color: 'white', textAlign: 'center', padding: '10px', fontWeight: 'bold' }}>
+          Backend Status: {status}
+        </div>
+
         <Routes>
           {/* GROUP 1: Pages WITH Navbar and Footer */}
-          {/* We wrap these routes inside the MainLayout */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<LandingPage />} />
           </Route>
 
           {/* GROUP 2: Pages WITHOUT Navbar and Footer */}
-          {/* This sits outside the MainLayout */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
           {/* GROUP 3: Dashboard Pages (Sidebar Layout) */}
-          {/* Any route inside here will have the Sidebar */}
           <Route element={<PrivateRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
@@ -61,15 +84,11 @@ function App() {
               <Route path="/loan-progress" element={<LoanProgress />} />
               <Route path="/repayment" element={<Repayment />} />
               <Route path="/history" element={<LoanHistory />} />
-
-              {/* <Route path="/settings" element={<SettingsPage />} /> */}
             </Route>
           </Route>
-
         </Routes>
       </Router>
     </AuthProvider>
-    
   );
 }
 

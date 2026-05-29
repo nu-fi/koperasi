@@ -1,0 +1,32 @@
+name: Koperasi CI Pipeline
+
+# 1. When should this run? Every time you push to the 'main' branch.
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+# 2. What should it do?
+jobs:
+  build-and-test:
+    # GitHub will spin up a temporary Linux server for you
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step A: Download your code onto the temporary server
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Step B: Build your Docker containers
+    - name: Build Docker Compose
+      run: docker-compose up -d --build
+
+    # Step C: Wait a few seconds for the database to fully wake up
+    - name: Sleep for 10 seconds
+      run: sleep 10
+
+    # Step D: Run the exact test you just ran locally!
+    # (Notice the -T flag: it tells Docker this is an automated script, not a human terminal)
+    - name: Run Django Tests
+      run: docker-compose exec -T backend python manage.py test
