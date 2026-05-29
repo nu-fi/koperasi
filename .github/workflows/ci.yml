@@ -33,6 +33,14 @@ jobs:
     - name: Run Django Tests
       run: docker compose exec -T backend python manage.py test apps.base
 
-    # THE NEW FRONTEND TEST
+    # NEW FRONTEND TEST: Run natively on the GitHub server instead of Docker
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Installs the latest standard Node version
+
     - name: Run React Build Test
-      run: docker compose exec -T frontend npm run build
+      run: |
+        cd frontend
+        npm install
+        npm run build
