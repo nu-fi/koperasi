@@ -1,87 +1,102 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import generics, permissions
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import status 
 
-from .serializers import LoanSerializer, LoanApplicationSerializer, ActiveLoanDetailSerializer, UploadRepaymentSerializer, LoanRepaymentSerializer
+from .serializers import (
+    LoanSerializer, 
+    LoanApplicationSerializer, 
+    ActiveLoanDetailSerializer, 
+    UploadRepaymentSerializer, 
+    LoanRepaymentSerializer
+)
 from .models import LoanApplication, Member, ActiveLoan, LoanRepayment
 
+# --- 1. Get Active Loans List ---
 @api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated]) # Added protection
 def get_loans(request):
     loans = ActiveLoan.objects.all()
-    serializer = LoanSerializer(loans, many=True)
+    serializer = ActiveLoanDetailSerializer(loans, many=True) # Standardized to Detail view
     return Response(serializer.data)
 
+
+# --- 2. Submit New Application (Used by ApplyLoan.jsx) ---
 class ApplyLoanView(generics.CreateAPIView):
     serializer_class = LoanApplicationSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        member_instance = Member.objects.get(user=self.request.user)        
-        serializer.save(member=member_instance)
+        try:
+            member_instance = Member.objects.get(user=self.request.user)        
+            serializer.save(member=member_instance)
+        except Member.DoesNotExist:
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError({"error": "Akun Anda belum terdaftar sebagai anggota aktif koperasi."})
 
+
+# --- 3. Check Dashboard Workflow Status ---
 class CheckActiveLoanView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Ambil pengajuan TERAKHIR
+        # Fetch the absolute latest application for this member
         latest_loan = LoanApplication.objects.filter(member__user=request.user).last()
 
         if latest_loan:
-            status_to_send = latest_loan.status
+            # Change variable name to current_status to avoid module name conflicts!
+            current_status = latest_loan.status
             
-            # CEK TAMBAHAN: Jika statusnya 'disbursed', cek apakah sudah lunas di tabel ActiveLoan?
             if latest_loan.status == 'disbursed':
                 try:
-                    # Cek relasi ActiveLoan
                     if hasattr(latest_loan, 'active_loan') and latest_loan.active_loan.is_fully_paid:
-                        status_to_send = 'paid' # Kita kirim status palsu 'paid' agar frontend tahu
+                        current_status = 'paid'
                 except Exception:
                     pass
             
-            return Response({"status": status_to_send})
-        else:
-            return Response({"status": None})
+            return Response({"status": current_status}, status=status.HTTP_200_OK)
+        
+        return Response({"status": None}, status=status.HTTP_200_OK)
 
+
+# --- 4. User's Application History List ---
 class MyLoanApplicationsView(generics.ListAPIView):
     serializer_class = LoanApplicationSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Return loans belonging to the user, newest first
         return LoanApplication.objects.filter(member__user=self.request.user).order_by('-application_date')
     
+
+# --- 5. Active Statement Invoice Screen ---
 class MyRepaymentDetailView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Ambil ActiveLoan milik user yang belum lunas
         active_loan = ActiveLoan.objects.filter(
             member__user=request.user, 
             is_fully_paid=False
         ).first()
         
         if not active_loan:
-             return Response({"error": "Tidak ada tagihan aktif."}, status=404)
+            return Response({"error": "Tidak ada tagihan aktif."}, status=status.HTTP_404_NOT_FOUND)
 
-        # --- FIX: GUNAKAN SERIALIZER, BUKAN MANUAL DICTIONARY ---
-        # Serializer ini yang punya logika 'get_remaining_amount' dan 'repayments'
         serializer = ActiveLoanDetailSerializer(active_loan)
-        
         return Response(serializer.data)
         
 
+# --- 6. Upload Payment Slip Image Asset ---
 class UploadRepaymentProofView(APIView):
-    permissions_classes = [permissions.IsAuthenticated]
-    parses_classes = (MultiPartParser, FormParser)
+    # FIXED: Corrected spelling configurations (Removed plural 's')
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
         try:
             active_loan = ActiveLoan.objects.get(member__user=request.user, is_fully_paid=False)
         except ActiveLoan.DoesNotExist:
-            return Response({"error": "Tidak ada tagihan aktif."}, status=404)
+            return Response({"error": "Tidak ada tagihan aktif untuk mengunggah bukti."}, status=status.HTTP_404_NOT_FOUND)
         
         serializer = UploadRepaymentSerializer(data=request.data)
 
@@ -91,14 +106,14 @@ class UploadRepaymentProofView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+
+# --- 7. Paid Off History Archive ---
 class LoanHistoryView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ActiveLoanDetailSerializer # Atau buat serializer ringkas baru jika mau
+    serializer_class = ActiveLoanDetailSerializer
 
     def get_queryset(self):
-        # Ambil semua ActiveLoan milik user yang SUDAH LUNAS (is_fully_paid=True)
         return ActiveLoan.objects.filter(
             member__user=self.request.user, 
             is_fully_paid=True
         ).order_by('-disbursement_date')
-    

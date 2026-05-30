@@ -22,12 +22,11 @@ const CalculatorModal = ({ isOpen, onClose, productName = "Pembiayaan Barang" })
     const dpAmount = (price * dpPercent) / 100;
     const principal = price - dpAmount; // Pokok pembiayaan
     
-    // Rumus Sederhana Murabahah (Flat/Anuitas tergantung kebijakan, ini contoh Flat)
-    // Total Margin = Pokok x (Margin% per tahun / 100) x (Tenor / 12 bulan)
-    const totalMargin = principal * (margin / 100) * (tenor / 12);
+    // Unified 35% Sharia Flat Margin Calculation matching Django exactly
+    const totalMargin = principal * 0.35; 
     
     const totalPrice = principal + totalMargin;
-    const monthlyInstallment = totalPrice / tenor;
+    const monthlyInstallment = tenor > 0 ? totalPrice / tenor : 0;
 
     setResult({
       dpAmount,
@@ -36,7 +35,7 @@ const CalculatorModal = ({ isOpen, onClose, productName = "Pembiayaan Barang" })
       totalPrice,
       monthlyInstallment,
     });
-  }, [price, dpPercent, tenor, margin]);
+  }, [price, dpPercent, tenor]); // Removed margin dependency since it's a fixed 35% flat rate;
 
   // Formatter Rupiah
   const formatRupiah = (number) => {
@@ -128,28 +127,34 @@ const CalculatorModal = ({ isOpen, onClose, productName = "Pembiayaan Barang" })
           </div>
 
           {/* Result Section */}
+          {/* Result Section */}
           <div className="mt-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
-            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Estimasi Angsuran</h4>
+            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Estimasi Perhitungan Syariah</h4>
             
             <div className="flex justify-between items-center mb-2 text-sm text-gray-600">
               <span>Uang Muka ({dpPercent}%)</span>
               <span className="font-medium">{formatRupiah(result.dpAmount)}</span>
             </div>
             
-            <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
+            <div className="flex justify-between items-center mb-2 text-sm text-gray-600">
               <span>Pokok Pembiayaan</span>
               <span className="font-medium">{formatRupiah(result.principal)}</span>
             </div>
 
+            <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
+              <span>Margin Keuntungan Koperasi (35% Flat)</span>
+              <span className="font-medium text-emerald-600">+{formatRupiah(result.totalMargin)}</span>
+            </div>
+
             <div className="border-t border-dashed border-gray-300 pt-3">
               <div className="flex justify-between items-end">
-                <span className="text-gray-800 font-medium">Cicilan per Bulan</span>
+                <span className="text-gray-800 font-medium">Cicilan per Bulan ({tenor}x)</span>
                 <span className="text-2xl font-bold text-amber-600">
                   {formatRupiah(result.monthlyInstallment)}
                 </span>
               </div>
               <p className="text-xs text-gray-400 mt-2 text-right">
-                *Estimasi margin setara {margin}% p.a (Flat). Syarat & ketentuan berlaku.
+                *Menggunakan Akad Murabahah/Jual-Beli. Margin bersifat tetap hingga akhir tenor.
               </p>
             </div>
           </div>
