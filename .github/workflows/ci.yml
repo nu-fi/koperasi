@@ -34,7 +34,7 @@ jobs:
       run: docker compose exec -T backend python manage.py test apps.base
 
     - name: Fix directory permissions
-        run: sudo chown -R $USER:$USER .
+      run: sudo chown -R $USER:$USER
 
     # NEW FRONTEND TEST: Run natively on the GitHub server instead of Docker
     - name: Setup Node.js
