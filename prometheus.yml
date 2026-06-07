@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s # Sedot data setiap 5 detik
+
+scrape_configs:
+  - job_name: 'django_backend'
+    static_configs:
+      # 'backend' adalah nama service Django lu di docker-compose
+      - targets: ['backend:8000']

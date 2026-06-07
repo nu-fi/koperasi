@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import DashboardLayout from './components/DashboardLayout.jsx';
+import Chatbot from './components/Chatbot.jsx'; // Import Chatbot sudah benar
 
 import LandingPage from './pages/LandingPage.jsx';
 import Login from './pages/Login.jsx';
@@ -87,6 +88,11 @@ function App() {
             </Route>
           </Route>
         </Routes>
+
+        {/* 4. Global Floating Components */}
+        {/* Chatbot diletakkan di sini agar melayang di atas semua halaman */}
+        <Chatbot />
+
       </Router>
     </AuthProvider>
   );

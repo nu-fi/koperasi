@@ -16,7 +16,7 @@ const Repayment = () => {
   const formatRupiah = (value) => {
     if (value === undefined || value === null || value === "") {
         return "Rp 0";
-    }
+    } 
 
     // 2. Paksa ubah string ke angka (Float)
     const number = parseFloat(value);
@@ -188,7 +188,7 @@ const Repayment = () => {
                     <div className="relative">
                         <span className="absolute left-3 top-2 text-gray-500">Rp</span>
                         <input 
-                            type="number" 
+                            type="text" 
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
                             placeholder="Contoh: 500000"
                             value={formatDisplayValue(amount)}
@@ -220,9 +220,9 @@ const Repayment = () => {
 
       {/* --- BAGIAN 2: TABEL RIWAYAT PEMBAYARAN --- */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
+        {/* <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
             <h3 className="font-semibold text-gray-700">Riwayat Pembayaran</h3>
-        </div>
+        </div> */}
         
         {loanData.repayments && loanData.repayments.length > 0 ? (
             <div className="overflow-x-auto">

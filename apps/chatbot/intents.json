@@ -1,0 +1,337 @@
+[
+    
+    {
+        "tag": "sapaan",
+        "patterns": [
+            "Halo",
+            "Hai",
+            "Selamat pagi",
+            "Selamat siang",
+            "Selamat malam",
+            "Ada orang?",
+            "Permisi",
+            "Ping",
+            "P",
+            "Halo admin",
+            "Hai bot",
+            "Assalamualaikum"
+        ],
+        "responses": [
+            "Halo! Selamat datang di Layanan Koperasi. Ada yang bisa saya bantu hari ini?",
+            "Hai! Saya asisten virtual Koperasi. Apa ada informasi yang ingin Anda tanyakan?",
+            "Halo kak! Silakan ketik pertanyaan Anda seputar layanan koperasi kami."
+        ]
+    },
+    {
+        "tag": "selamat_tinggal",
+        "patterns": [
+            "Terima kasih, itu saja",
+            "Dah",
+            "Selamat tinggal",
+            "Sampai jumpa",
+            "Bye",
+            "Udah cukup",
+            "Okelah makasih",
+            "Sampai ketemu lagi",
+            "Pamit dulu"
+        ],
+        "responses": [
+            "Terima kasih telah menggunakan layanan kami. Semoga harimu menyenangkan!",
+            "Sama-sama! Jangan ragu untuk kembali jika ada pertanyaan lain.",
+            "Sampai jumpa! Sukses selalu untuk Anda."
+        ]
+    },
+    {
+        "tag": "terima_kasih",
+        "patterns": [
+            "Terima kasih banyak",
+            "Makasih",
+            "Thanks",
+            "Thank you",
+            "Oke makasih infonya",
+            "Sangat membantu, makasih",
+            "Tengkyu"
+        ],
+        "responses": [
+            "Dengan senang hati! Ada hal lain yang ingin ditanyakan?",
+            "Sama-sama kak! Senang bisa membantu.",
+            "Kembali kasih! Jangan sungkan untuk bertanya lagi ya."
+        ]
+    },
+    {
+        "tag": "syarat_daftar",
+        "patterns": [
+            "Gimana cara daftar koperasi?",
+            "Syarat jadi anggota apa?",
+            "Cara join koperasi",
+            "Mau daftar jadi anggota gimana?",
+            "Syarat pendaftaran anggota baru",
+            "Apa aja yang disiapin buat daftar?",
+            "Langkah jadi nasabah gimana?",
+            "Mau buka akun koperasi",
+            "Cara register akun koperasi"
+        ],
+        "responses": [
+            "Untuk mendaftar menjadi anggota koperasi, Anda cukup melakukan registrasi di menu 'Daftar' pada website ini. Siapkan KTP, nomor HP aktif, dan bersedia membayar Simpanan Pokok sebesar Rp 100.000 saat pendaftaran disetujui."
+        ]
+    },
+    {
+        "tag": "jenis_simpanan",
+        "patterns": [
+            "Ada jenis simpanan apa aja?",
+            "Bedanya simpanan pokok dan wajib apa?",
+            "Tabungan di koperasi ada apa aja?",
+            "Jelaskan macam-macam simpanan",
+            "Simpanan sukarela itu apa?",
+            "Bisa nabung apa aja di sini?",
+            "Info jenis tabungan"
+        ],
+        "responses": [
+            "Di koperasi kami terdapat 3 jenis simpanan: \n1. Simpanan Pokok: Dibayar sekali saat awal mendaftar.\n2. Simpanan Wajib: Dibayar rutin setiap bulan.\n3. Simpanan Sukarela: Tabungan bebas yang bisa disetor dan ditarik kapan saja."
+        ]
+    },
+    {
+        "tag": "cara_pinjam",
+        "patterns": [
+            "Gimana cara ajuin pinjaman?",
+            "Mau ngutang gimana caranya?",
+            "Cara pinjam uang di koperasi",
+            "Langkah mengajukan kredit",
+            "Syarat mau pinjam dana",
+            "Prosedur pinjam uang gimana?",
+            "Bisa pinjam uang nggak?",
+            "Cara apply loan"
+        ],
+        "responses": [
+            "Pengajuan pinjaman dapat dilakukan melalui menu 'Pengajuan Pinjaman' di dashboard akun Anda. Anda harus menjadi anggota aktif minimal selama 3 bulan dan tidak memiliki tunggakan pinjaman sebelumnya."
+        ]
+    },
+    {
+        "tag": "bunga_pinjaman",
+        "patterns": [
+            "Bunga pinjamannya berapa?",
+            "Berapa persen bunga kredit?",
+            "Bunga pinjaman di sini mahal nggak?",
+            "Info suku bunga pinjaman",
+            "Bunga cicilannya berapa persen?",
+            "Hitungan bunga pinjamannya gimana?",
+            "Ada bunganya nggak?"
+        ],
+        "responses": [
+            "Koperasi kami menerapkan sistem bunga menurun (*flat*) yang sangat kompetitif, yaitu sebesar 1.5% per bulan dari total pinjaman awal. Simulasi angsuran dapat Anda lihat langsung saat mengisi form pengajuan."
+        ]
+    },
+    {
+        "tag": "cara_bayar_cicilan",
+        "patterns": [
+            "Cara bayar cicilannya gimana?",
+            "Bayar hutang lewat apa?",
+            "Metode pembayaran angsuran",
+            "Bisa transfer nggak buat bayar?",
+            "Cara lunasi tagihan bulan ini",
+            "Bayarnya ke rekening mana?",
+            "Panduan bayar tagihan"
+        ],
+        "responses": [
+            "Pembayaran cicilan atau setoran simpanan dapat dilakukan melalui transfer Bank ke rekening resmi Koperasi (BCA: 12345678, Mandiri: 87654321) atau menggunakan Virtual Account yang ada di halaman tagihan Anda."
+        ]
+    },
+    {
+        "tag": "denda_telat",
+        "patterns": [
+            "Kalau telat bayar ada denda nggak?",
+            "Denda keterlambatan berapa?",
+            "Gimana kalau telat bayar cicilan?",
+            "Telat jatuh tempo kena denda berapa?",
+            "Sanksi telat bayar angsuran",
+            "Kena penalti nggak kalau lewat tanggal?"
+        ],
+        "responses": [
+            "Keterlambatan pembayaran angsuran melewati tanggal jatuh tempo akan dikenakan denda sebesar 0.5% per hari dari nominal angsuran bulan tersebut. Pastikan membayar tepat waktu ya!"
+        ]
+    },
+    {
+        "tag": "cara_tarik_simpanan",
+        "patterns": [
+            "Gimana cara narik uang simpanan?",
+            "Simpanan bisa ditarik nggak?",
+            "Cara narik saldo tabungan",
+            "Bisa cairin simpanan sukarela?",
+            "Prosedur penarikan dana",
+            "Mau ambil duit di koperasi",
+            "Cara withdraw uang"
+        ],
+        "responses": [
+            "Simpanan Sukarela dapat ditarik kapan saja melalui menu 'Tarik Dana' di dashboard. Namun, untuk Simpanan Pokok dan Wajib hanya bisa ditarik jika Anda memutuskan untuk keluar dari keanggotaan koperasi."
+        ]
+    },
+    {
+        "tag": "info_shu",
+        "patterns": [
+            "SHU itu apa?",
+            "Kapan pembagian SHU?",
+            "Dapat sisa hasil usaha nggak?",
+            "Info pembagian dividen koperasi",
+            "Gimana cara dapat SHU?",
+            "Hitungan SHU gimana?",
+            "SHU dibagikan kapan?"
+        ],
+        "responses": [
+            "SHU (Sisa Hasil Usaha) adalah keuntungan koperasi yang dibagikan kepada anggota setiap akhir tahun buku (biasanya bulan Maret setelah RAT). Besaran SHU yang Anda terima bergantung pada seberapa aktif Anda menabung dan meminjam di koperasi."
+        ]
+    },
+    {
+        "tag": "jadwal_operasional",
+        "patterns": [
+            "Koperasi buka jam berapa?",
+            "Jadwal operasional kantor",
+            "Hari sabtu buka nggak?",
+            "Jam kerja koperasi",
+            "Kantor tutup jam berapa?",
+            "Layanan online jam berapa?",
+            "Kapan admin standby?"
+        ],
+        "responses": [
+            "Sistem website Koperasi beroperasi 24 jam. Namun, untuk layanan persetujuan pinjaman dan Customer Service via WhatsApp, kami beroperasi setiap hari Senin - Jumat pukul 08:00 WIB hingga 16:00 WIB."
+        ]
+    },
+    {
+        "tag": "lokasi_kantor",
+        "patterns": [
+            "Alamat kantor koperasinya di mana?",
+            "Lokasi koperasi di mana?",
+            "Kantor pusatnya di mana?",
+            "Alamat lengkap koperasi",
+            "Bisa datang langsung ke kantor?",
+            "Lokasi offline di mana?"
+        ],
+        "responses": [
+            "Kantor pusat koperasi kami berlokasi di Jl. Jendral Sudirman No. 123, Pontianak, Kalimantan Barat. Anda bisa datang langsung pada jam operasional kerja."
+        ]
+    },
+    {
+        "tag": "kontak_cs",
+        "patterns": [
+            "Cara hubungi admin gimana?",
+            "Ada nomor WA yang bisa dihubungi?",
+            "Kontak CS koperasi",
+            "Kalau mau komplain ke mana?",
+            "Nomor telepon koperasi",
+            "Tanya langsung sama manusia gimana?",
+            "Bisa ngobrol sama admin asli?"
+        ],
+        "responses": [
+            "Jika butuh bantuan lebih lanjut, Anda dapat menghubungi tim Customer Service kami melalui WhatsApp di nomor 0812-3456-7890 atau email ke cs@koperasi-nurul.tech."
+        ]
+    },
+    {
+        "tag": "lupa_password",
+        "patterns": [
+            "Saya lupa password",
+            "Gimana cara reset password?",
+            "Nggak bisa login, lupa sandi",
+            "Cara ganti password gimana?",
+            "Lupa kata sandi akun",
+            "Tolong reset akun saya"
+        ],
+        "responses": [
+            "Jika Anda lupa password, silakan klik tulisan 'Lupa Password?' di halaman Login. Kami akan mengirimkan tautan untuk mereset password ke email yang Anda daftarkan."
+        ]
+    },
+    {
+        "tag": "jam_bot",
+        "patterns": [
+            "Kamu ini bot atau manusia?",
+            "Apakah ini robot?",
+            "Lagi ngobrol sama siapa ini?",
+            "Kamu AI ya?",
+            "Siapa namamu?",
+            "Ini komputer atau admin asli?"
+        ],
+        "responses": [
+            "Saya adalah Asisten Virtual (Bot) berbasis AI yang siap melayani Anda 24/7. Walaupun saya bot, saya punya akses langsung ke sistem koperasi untuk mengecek data Anda secara cepat!"
+        ]
+    },
+    {
+        "tag": "keluhan",
+        "patterns": [
+            "Websitenya error nih",
+            "Kok nggak bisa klik tombolnya?",
+            "Aplikasi bug / error",
+            "Sistem koperasi bermasalah",
+            "Saya ada keluhan",
+            "Gimana cara laporin bug?"
+        ],
+        "responses": [
+            "Mohon maaf atas ketidaknyamanan yang Anda alami. Silakan laporkan detail error-nya melalui fitur 'Hubungi Kami' atau langsung chat WhatsApp Admin kami agar tim teknis (IT) bisa segera memperbaikinya."
+        ]
+    },
+    {
+        "tag": "batas_pinjaman",
+        "patterns": [
+            "Maksimal pinjam uang berapa?",
+            "Limit pinjaman berapa?",
+            "Bisa pinjam sampai puluhan juta?",
+            "Batas maksimal kredit",
+            "Plafon pinjamannya berapa?",
+            "Limit kredit untuk anggota baru"
+        ],
+        "responses": [
+            "Limit pinjaman maksimal yang bisa diajukan bergantung pada total simpanan Anda dan durasi keanggotaan. Untuk anggota baru, limit awal biasanya adalah Rp 5.000.000."
+        ]
+    },
+    {
+        "tag": "keluar_anggota",
+        "patterns": [
+            "Gimana cara berhenti jadi anggota?",
+            "Mau keluar dari koperasi",
+            "Cara tutup akun koperasi",
+            "Prosedur pengunduran diri anggota",
+            "Bisa berhenti langganan koperasi?",
+            "Mau ambil semua uang dan keluar"
+        ],
+        "responses": [
+            "Untuk keluar dari keanggotaan koperasi, pastikan Anda sudah melunasi seluruh pinjaman. Kemudian, ajukan permohonan penutupan akun melalui Customer Service. Seluruh simpanan Anda (Pokok, Wajib, Sukarela) akan dikembalikan 100%."
+        ]
+    },
+    {
+        "tag": "investasi",
+        "patterns": [
+            "Apakah koperasi ini aman?",
+            "Apakah uang saya aman di sini?",
+            "Koperasi ini legal nggak?",
+            "Uangnya diinvestasiin ke mana?",
+            "Keamanan dana anggota",
+            "Koperasi berizin resmi nggak?"
+        ],
+        "responses": [
+            "Tentu! Koperasi kami berbadan hukum resmi dan diawasi oleh Kementerian Koperasi dan UKM Republik Indonesia. Kami menjamin keamanan dana anggota yang dikelola secara transparan untuk kesejahteraan bersama."
+        ]
+    },
+    {
+        "tag": "cek_sisa_pinjaman",
+        "patterns": [
+            "Berapa sisa pinjaman saya?",
+            "Cek sisa hutang",
+            "Tagihan pinjaman bulan ini berapa?",
+            "Saya mau lihat sisa cicilan",
+            "Tolong cek pinjaman saya"
+        ],
+        "responses": [
+            "DYNAMIC_ACTION"
+        ]
+    },
+    {
+        "tag": "cek_total_simpanan",
+        "patterns": [
+            "Berapa total simpanan saya?",
+            "Cek saldo tabungan koperasi",
+            "Saya mau lihat uang simpanan",
+            "Berapa uang saya di koperasi?",
+            "Tolong cek saldo"
+        ],
+        "responses": [
+            "DYNAMIC_ACTION"
+        ]
+    }
+]

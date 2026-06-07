@@ -25,6 +25,8 @@ urlpatterns = [
     path('user/', include('apps.users.urls')),
     path('loans/', include('apps.loans.urls')),
     path('', include('apps.base.urls')),
+    path('', include('django_prometheus.urls')),
+    path('chatbot/', include('apps.chatbot.urls')),
 ]
 
 if settings.DEBUG:

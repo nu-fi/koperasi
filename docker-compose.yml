@@ -27,9 +27,30 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5173:80"
+      - "5173:5173"  
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app           
+      - /app/node_modules         
+    environment:                  
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true        # Mencegah bentrok library Windows vs Linux
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
     depends_on:
       - backend
 
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
 volumes:
   postgres_data:

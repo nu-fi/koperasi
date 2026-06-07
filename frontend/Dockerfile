@@ -1,28 +1,16 @@
-# Use Node 20 or higher to satisfy Vite's requirements
-FROM node:20-alpine AS builder
+FROM node:22-alpine
 
 WORKDIR /app
 
-# Copy dependency files
+# Copy daftar library dulu biar diinstall
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the frontend source code
+# Copy sisa kodenya
 COPY . .
 
-# This is where it was failing before
-RUN npm run build
+# Buka port 5173 untuk Vite
+EXPOSE 5173
 
-# Stage 2: Serve with Nginx
-FROM nginx:alpine
-
-# Copy the custom Nginx config we just made
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy the built React files
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Perintah untuk menjalankan Vite Dev Server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

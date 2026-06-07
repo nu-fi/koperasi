@@ -17,8 +17,8 @@ class LoanApplicationSerializer(serializers.ModelSerializer):
 class LoanRepaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoanRepayment
-        # FIXED: Menggunakan 'proof_image' agar sinkron dengan database & frontend payload
-        fields = ['id', 'payment_date', 'amount_paid', 'proof_image', 'is_verified']
+        # FIXED: Menggunakan 'proof_of_payment' agar sinkron dengan database & frontend payload
+        fields = ['id', 'payment_date', 'amount_paid', 'proof_of_payment', 'is_verified']
 
 
 class ActiveLoanDetailSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class ActiveLoanDetailSerializer(serializers.ModelSerializer):
     
     def get_repayments(self, obj):
         # Solusi Aman: Query langsung ke model LoanRepayment menggunakan instance active_loan terkait
-        logs = LoanRepayment.objects.filter(active_loan=obj).order_by('-payment_date')
+        logs = LoanRepayment.objects.filter(active_loan=obj).order_by('-payment_date', '-id')
         return LoanRepaymentSerializer(logs, many=True).data
 
     def get_total_paid(self, obj):
@@ -52,5 +52,5 @@ class ActiveLoanDetailSerializer(serializers.ModelSerializer):
 class UploadRepaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoanRepayment
-        # FIXED: Menggunakan 'proof_image' agar klop mendeteksi kiriman file dari React
-        fields = ['amount_paid', 'proof_image']
+        # FIXED: Menggunakan 'proof_of_payment' agar klop mendeteksi kiriman file dari React
+        fields = ['amount_paid', 'proof_of_payment']

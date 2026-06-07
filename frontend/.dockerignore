@@ -1,0 +1,17 @@
+# Mengabaikan folder environment Python
+venv/
+env/
+.venv/
+
+# Mengabaikan cache Python
+__pycache__/
+*.pyc
+
+# Mengabaikan folder dependencies React/Node
+node_modules/
+
+# Mengabaikan folder Git
+.git/
+
+# Mengabaikan file model berat (opsional, karena kita pakai .onnx yang ringan)
+data.pth
